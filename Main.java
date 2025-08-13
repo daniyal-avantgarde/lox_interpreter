@@ -8,14 +8,15 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
-public class Lox {
+public class Main {
+    static boolean hadError = false;
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
             print("Incorrect usage");
-        } else if (args.length == 1) { //filename given
+        } else if (args.length == 1) { // if filename execute file
             runFile(args[0]);           
         } else if (args.length == 0) {
-            runPrompt();
+            runPrompt(); // if no filename start REPL
         }
     }
 
@@ -28,19 +29,26 @@ public class Lox {
             String line = reader.readLine();
             if (line == null) break;
             run(line);
+            hadError = false;
         }
     }
-    
     public static void runFile(String path) throws IOException{
         run(new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8));
+        if (hadError) System.exit(65);
     }
-
     public static void run(String source) {
         Scanner scanner = new Scanner(source);
         while (scanner.hasNextLine()) {
             print(scanner.nextLine());
         }
+        scanner.close();
+    }
 
+    static void error(int line, String message) {
+        report(line, "", message);
+    }
+    static void report(int line, String where, String message) {
+        System.err.println("[Line " + line + "] Error" + where + ": " + message);
     }
 
     public static void print(String string) {
