@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class Main {
     static boolean hadError = false;
@@ -25,7 +25,7 @@ public class Main {
         BufferedReader reader = new BufferedReader(input);
 
         while (true) {
-            System.out.print(">");
+            System.out.print("> ");
             String line = reader.readLine();
             if (line == null) break;
             run(line);
@@ -38,10 +38,11 @@ public class Main {
     }
     public static void run(String source) {
         Scanner scanner = new Scanner(source);
-        while (scanner.hasNextLine()) {
-            print(scanner.nextLine());
+        List<Token> tokens = scanner.scanTokens();
+
+        for (Token token : tokens) {
+            print(token.lexeme);
         }
-        scanner.close();
     }
 
     static void error(int line, String message) {
