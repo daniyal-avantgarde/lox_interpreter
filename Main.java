@@ -42,6 +42,8 @@ public class Main {
 
         for (Token token : tokens) {
             print(token.lexeme);
+            // print(String.valueOf(token.literal));
+            print(String.valueOf(token.type));
         }
     }
 
